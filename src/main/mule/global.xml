@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:api-gateway="http://www.mulesoft.org/schema/mule/api-gateway"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:secure-properties="http://www.mulesoft.org/schema/mule/secure-properties" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd 
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd">
+	    <secure-properties:config name="secure-properties-config" doc:name="Secure Properties Config" doc:id="0c67f748-9f8f-4c29-948e-263f9d2bd922" file="properties\secure-${env}.properties" key="${aes.decrypt.key}" />
+	<configuration-properties doc:name="Configuration properties" doc:id="2940b81c-2e10-48c5-a5cd-cd5a95ad1963" file="properties/${env}.properties" />
+	<api-gateway:autodiscovery apiId="${api.id}" ignoreBasePath="true" doc:name="API Autodiscovery" doc:id="121af46f-8105-4c29-926d-6b57b166e9f0" flowRef="retail-sfcc-sapi-main" />
+	<sub-flow name="common-error-appender" doc:id="58068550-9af5-40b8-acc2-6df8ca74bb6d" >
+		<ee:transform doc:name="DW set common error response" doc:id="ad7fb260-c4c4-4ec3-bee3-31b4cc587d28" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload ++
+{
+	timestamp: now(),
+	error: error.detailedDescription,
+	path: error.failingComponent,
+	status : error.exception."type" default error.errorType.identifier,
+	correlationId : correlationId
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</sub-flow></mule>

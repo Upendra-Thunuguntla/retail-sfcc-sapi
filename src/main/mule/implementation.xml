@@ -1,5 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd"></mule>
+<mule xmlns:sftp="http://www.mulesoft.org/schema/mule/sftp" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/sftp http://www.mulesoft.org/schema/mule/sftp/current/mule-sftp.xsd">
+	<flow name="write-file-to-sftp-flow" doc:id="8e29d9e6-f9b7-4b53-b557-bf05b9fbe118" >
+		<logger level="INFO" doc:name="Start Logger" doc:id="a2b54729-3512-4c88-a006-29d4a01b4f40" message='#["Received req to process file for $(vars.fileName) for $(vars.storeId)"]' />
+		<sftp:write doc:name="Write to File" doc:id="8de3fc5c-2385-4ced-9a92-cd58bd6c218b" config-ref="azure-sftp-config" path='#[p("sftp.outbound.path") ++ "/$(vars.fileName)"]'/>
+		<logger level="INFO" doc:name="End Logger" doc:id="1868fc18-0230-487a-b2ea-37adea832d53" message="File processed successfuly" />
+		<ee:transform doc:name="DW set response message" doc:id="82e021b0-253d-439c-b9ff-45180ffecbe3" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	message : "File processed successfully"
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<error-handler >
+			<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="04c1c999-631a-4c87-ad8f-bd89d3f3dd8e" type="ANY" >
+				<ee:transform doc:name="DW set error messsage" doc:id="ad585a65-c66e-4df4-bc23-c3f2d5b55f71" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	message : "Unable to read the required file"
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+				<flow-ref doc:name="common-error-appender" doc:id="591fbad0-20cd-4371-acb8-4847cfb8e2c0" name="common-error-appender" />
+				<logger level="INFO" doc:name="Error" doc:id="e46bfa88-a8d6-4518-885b-f85f1c5a5ca6" message="#[payload]" />
+			</on-error-continue>
+		</error-handler>
+	</flow>
+</mule>

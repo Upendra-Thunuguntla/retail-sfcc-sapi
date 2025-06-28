@@ -30,6 +30,9 @@ output application/json
 	message : "Unable to read the required file"
 }]]></ee:set-payload>
 					</ee:message>
+					<ee:variables >
+						<ee:set-variable variableName="httpStatus" ><![CDATA[500]]></ee:set-variable>
+					</ee:variables>
 				</ee:transform>
 				<flow-ref doc:name="common-error-appender" doc:id="591fbad0-20cd-4371-acb8-4847cfb8e2c0" name="common-error-appender" />
 				<logger level="INFO" doc:name="Error" doc:id="e46bfa88-a8d6-4518-885b-f85f1c5a5ca6" message="#[payload]" />

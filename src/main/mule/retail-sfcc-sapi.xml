@@ -24,7 +24,7 @@ output application/json
                         <ee:set-variable variableName="httpStatus">400</ee:set-variable>
                     </ee:variables>
                 </ee:transform>
-				<flow-ref doc:name="common-error-appender" doc:id="591ae76a-74c4-4a5e-ade6-6aa5b90e328f" name="common-error-appender" />
+                <flow-ref doc:name="common-error-appender" doc:id="591ae76a-74c4-4a5e-ade6-6aa5b90e328f" name="common-error-appender" />
             </on-error-propagate>
             <on-error-propagate type="APIKIT:NOT_FOUND">
                 <ee:transform doc:name="Transform Message">
@@ -38,7 +38,7 @@ output application/json
                         <ee:set-variable variableName="httpStatus">404</ee:set-variable>
                     </ee:variables>
                 </ee:transform>
-				<flow-ref doc:name="common-error-appender" doc:id="07f16eb1-5a69-4c34-af64-aa283785fefe" name="common-error-appender" />
+                <flow-ref doc:name="common-error-appender" doc:id="07f16eb1-5a69-4c34-af64-aa283785fefe" name="common-error-appender" />
             </on-error-propagate>
             <on-error-propagate type="APIKIT:METHOD_NOT_ALLOWED">
                 <ee:transform doc:name="Transform Message">
@@ -52,7 +52,7 @@ output application/json
                         <ee:set-variable variableName="httpStatus">405</ee:set-variable>
                     </ee:variables>
                 </ee:transform>
-				<flow-ref doc:name="common-error-appender" doc:id="bbccc5a1-f4be-4e6a-a36a-95900bd8f85c" name="common-error-appender" />
+                <flow-ref doc:name="common-error-appender" doc:id="bbccc5a1-f4be-4e6a-a36a-95900bd8f85c" name="common-error-appender" />
             </on-error-propagate>
             <on-error-propagate type="APIKIT:NOT_ACCEPTABLE">
                 <ee:transform doc:name="Transform Message">
@@ -66,7 +66,7 @@ output application/json
                         <ee:set-variable variableName="httpStatus">406</ee:set-variable>
                     </ee:variables>
                 </ee:transform>
-				<flow-ref doc:name="common-error-appender" doc:id="bde6096a-8737-4eac-9703-852b198adfc6" name="common-error-appender" />
+                <flow-ref doc:name="common-error-appender" doc:id="bde6096a-8737-4eac-9703-852b198adfc6" name="common-error-appender" />
             </on-error-propagate>
             <on-error-propagate type="APIKIT:UNSUPPORTED_MEDIA_TYPE">
                 <ee:transform doc:name="Transform Message">
@@ -80,7 +80,7 @@ output application/json
                         <ee:set-variable variableName="httpStatus">415</ee:set-variable>
                     </ee:variables>
                 </ee:transform>
-				<flow-ref doc:name="common-error-appender" doc:id="80523dfc-ba8a-44f3-9edd-ad381e1dbebe" name="common-error-appender" />
+                <flow-ref doc:name="common-error-appender" doc:id="80523dfc-ba8a-44f3-9edd-ad381e1dbebe" name="common-error-appender" />
             </on-error-propagate>
             <on-error-propagate type="APIKIT:NOT_IMPLEMENTED">
                 <ee:transform doc:name="Transform Message">
@@ -94,7 +94,7 @@ output application/json
                         <ee:set-variable variableName="httpStatus">501</ee:set-variable>
                     </ee:variables>
                 </ee:transform>
-				<flow-ref doc:name="common-error-appender" doc:id="886fecb4-469e-4ea7-8f95-10976b8918a0" name="common-error-appender" />
+                <flow-ref doc:name="common-error-appender" doc:id="886fecb4-469e-4ea7-8f95-10976b8918a0" name="common-error-appender" />
             </on-error-propagate>
         </error-handler>
     </flow>
@@ -129,9 +129,43 @@ output application/json
         <ee:transform doc:name="DW set vars fileName &amp; storeId">
             <ee:variables>
                 <ee:set-variable variableName="storeId"><![CDATA[attributes.uriParams.'storeId']]></ee:set-variable>
-				<ee:set-variable variableName="fileName" ><![CDATA[attributes.headers."x-filename"]]></ee:set-variable>
+                <ee:set-variable variableName="fileName"><![CDATA[attributes.headers."x-filename"]]></ee:set-variable>
             </ee:variables>
         </ee:transform>
-		<flow-ref doc:name="write-file-to-sftp-flow" doc:id="8ca9f995-30ab-4932-ab8d-50a8a3028213" name="write-file-to-sftp-flow"/>
+        <flow-ref doc:name="write-file-to-sftp-flow" doc:id="8ca9f995-30ab-4932-ab8d-50a8a3028213" name="write-file-to-sftp-flow" />
+    </flow>
+    <flow name="get:\health-check:retail-sfcc-sapi-config">
+        <ee:transform doc:name="Transform Message">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  name: "API Name",
+  status: "UP",
+  message: "API is healthy and running.",
+  timestamp: "2025-06-26T04:00:00Z",
+  dependencies: [
+    {
+      name: "WMS SFTP",
+      status: "UP"
+    }, 
+    {
+      name: "Email Service",
+      status: "UP"
+    }
+  ]
+} as Object {encoding: "UTF-8", mediaType: "application/json"}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+    <flow name="post:\inventory\(storeId):application\csv:retail-sfcc-sapi-config">
+		<ee:transform doc:name="DW set vars fileName &amp; storeId" doc:id="53db825f-1a2d-43a0-8683-2baacfa6b110" >
+			<ee:variables >
+				<ee:set-variable variableName="storeId" ><![CDATA[attributes.uriParams.'storeId']]></ee:set-variable>
+				<ee:set-variable variableName="fileName" ><![CDATA[attributes.headers."x-filename"]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<flow-ref doc:name="write-file-to-sftp-flow" doc:id="240c94b3-d5b9-458f-bfeb-dcbcbada2bbe" name="write-file-to-sftp-flow" />
     </flow>
 </mule>

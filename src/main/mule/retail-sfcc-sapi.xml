@@ -100,7 +100,7 @@ output application/json
             </on-error-propagate>
         </error-handler>
     </flow>
-	<flow name="post:\inventory\(storeId):text\csv:retail-sfcc-sapi-config">
+	<flow name="post:\inventory\(storeId):text\csv:retail-sfcc-sapi-config" doc:id="a88aad5f-e867-467c-be12-e80bd55a2ec1">
         <ee:transform doc:name="DW set vars fileName &amp; storeId">
             <ee:variables>
                 <ee:set-variable variableName="storeId"><![CDATA[attributes.uriParams.'storeId']]></ee:set-variable>
@@ -155,7 +155,7 @@ output application/json
 		</error-handler>
 
     </flow>
-    <flow name="post:\inventory\(storeId):application\csv:retail-sfcc-sapi-config">
+    <flow name="post:\inventory\(storeId):application\csv:retail-sfcc-sapi-config" doc:id="94643c4c-d21e-4bd8-99ab-2620dbf4ed4a">
 		<ee:transform doc:name="DW set vars fileName &amp; storeId" doc:id="53db825f-1a2d-43a0-8683-2baacfa6b110" >
 			<ee:variables >
 				<ee:set-variable variableName="storeId" ><![CDATA[attributes.uriParams.'storeId']]></ee:set-variable>

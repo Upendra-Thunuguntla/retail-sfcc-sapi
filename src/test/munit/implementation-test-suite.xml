@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:munit="http://www.mulesoft.org/schema/mule/munit"
+	xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<munit:config name="implementation-test-suite.xml" />
+	<munit:test name="implementation-test-suite-write-file-to-sftp-success-test" doc:id="6876af2e-d59c-41cb-908a-e20dfb263b41" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="sftp write" doc:id="70de624d-56d8-48f2-b1ba-1bcd13bdb8e3" processor="sftp:write">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Write to File" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="8de3fc5c-2385-4ced-9a92-cd58bd6c218b" attributeName="doc:id" />
+					<munit-tools:with-attribute whereValue="azure-sftp-config" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output json&#10;---&#10;[]]" mediaType="application/json" encoding="UTF-8" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit:set-event doc:name="Attributes &amp; Vars" doc:id="e1916ebb-177c-4cb3-984d-7ca8ce1c6a4d" >
+				<munit:attributes value="#[output json&#10;---&#10;{&#10;	headers: {&#10;		&quot;x-filename&quot;: &quot;Sample.csv&quot;&#10;	},&#10;	uriParams: {&#10;		'storeId': &quot;ABCD&quot;&#10;	}&#10;}]" encoding="UTF-8" mediaType="application/json" />
+				<munit:variables >
+					<munit:variable key="storeId" value="ABC" encoding="UTF-8" mediaType="application/json" />
+					<munit:variable key="fileName" value="SampleFile.csv" encoding="UTF-8" mediaType="application/json" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<ee:transform doc:name="DW set filename &amp; storeId" doc:id="96b0b01d-a79f-43da-be39-f28ff61d3b35" >
+				<ee:message >
+					<ee:set-attributes ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	headers: {
+		"x-filename": "Sample.csv"
+	},
+	uriParams: {
+		'storeId': "ABCD"
+	}
+}
+]]></ee:set-attributes>
+				</ee:message>
+			</ee:transform>
+			<flow-ref doc:name="post:\inventory\(storeId):application\csv:retail-sfcc-sapi-config" doc:id="75b122a9-36f0-4a87-9f54-bf6e056f6327" name="post:\inventory\(storeId):application\csv:retail-sfcc-sapi-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:verify-call doc:name="logger" doc:id="fad1889a-0812-472d-8afa-1c6800be09d9" processor="logger" atLeast="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="End Logger" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="1868fc18-0230-487a-b2ea-37adea832d53" attributeName="doc:id" />
+					<munit-tools:with-attribute whereValue="File processed successfuly" attributeName="message" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="implementation-test-suite-write-file-to-sftp-fail-test" doc:id="74366034-ee20-4bec-b339-583998043b67" description="Test">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="sftp write - SFTP:ILLEGAL_PATH" doc:id="d12ffe53-53ab-428d-816e-3c1d476f19da" processor="sftp:write" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Write to File" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="8de3fc5c-2385-4ced-9a92-cd58bd6c218b" attributeName="doc:id" />
+					<munit-tools:with-attribute whereValue="azure-sftp-config" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output json&#10;---&#10;[]]" mediaType="application/json" encoding="UTF-8" />
+					<munit-tools:error typeId="SFTP:ILLEGAL_PATH" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit:set-event doc:name="Attributes &amp; Vars" doc:id="d49d85d8-329c-4a17-8e64-f70fcc4870b8" >
+				<munit:attributes value="#[output json&#10;---&#10;{&#10;	headers: {&#10;		&quot;x-filename&quot;: &quot;Sample.csv&quot;&#10;	},&#10;	uriParams: {&#10;		'storeId': &quot;ABCD&quot;&#10;	}&#10;}]" encoding="UTF-8" mediaType="application/json" />
+				<munit:variables >
+					<munit:variable key="storeId" value="ABC" encoding="UTF-8" mediaType="application/json" />
+					<munit:variable key="fileName" value="SampleFile.csv" encoding="UTF-8" mediaType="application/json" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<ee:transform doc:name="DW set filename &amp; storeId" doc:id="ef744e8c-f0bf-48d3-a48f-cf0f72258f96">
+				<ee:message>
+					<ee:set-attributes ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	headers: {
+		"x-filename": "Sample.csv"
+	},
+	uriParams: {
+		'storeId': "ABCD"
+	}
+}
+]]></ee:set-attributes>
+				</ee:message>
+			</ee:transform>
+			<flow-ref doc:name="post:\inventory\(storeId):text\csv:retail-sfcc-sapi-config" doc:id="777693fe-34fe-4d81-baab-70f1698e0cd0" name="post:\inventory\(storeId):text\csv:retail-sfcc-sapi-config" />
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:verify-call doc:name="logger" doc:id="0d7c8264-47c8-4c3d-b7b1-28fbf1635944" processor="logger" atLeast="1" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="INFO" attributeName="level" />
+					<munit-tools:with-attribute whereValue="Error" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="e46bfa88-a8d6-4518-885b-f85f1c5a5ca6" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+
+
+</mule>

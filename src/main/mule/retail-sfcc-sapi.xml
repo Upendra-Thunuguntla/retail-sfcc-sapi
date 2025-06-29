@@ -2,7 +2,7 @@
 <mule xmlns:sftp="http://www.mulesoft.org/schema/mule/sftp"
 	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
 http://www.mulesoft.org/schema/mule/sftp http://www.mulesoft.org/schema/mule/sftp/current/mule-sftp.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd ">
-    <flow name="retail-sfcc-sapi-main">
+    <flow name="retail-sfcc-sapi-main" doc:id="df7bc2fb-63ed-4e98-a635-16f6329028a3">
         <http:listener config-ref="retail-sfcc-sapi-httpListenerConfig" path="/api/*">
             <http:response statusCode="#[vars.httpStatus default 200]">
                 <http:headers>#[vars.outboundHeaders default {}]</http:headers>
@@ -12,7 +12,7 @@ http://www.mulesoft.org/schema/mule/sftp http://www.mulesoft.org/schema/mule/sft
                 <http:headers>#[vars.outboundHeaders default {}]</http:headers>
             </http:error-response>
         </http:listener>
-        <apikit:router config-ref="retail-sfcc-sapi-config" />
+        <apikit:router config-ref="retail-sfcc-sapi-config" doc:id="6eb90565-89eb-4d5d-9334-6861064ac3e2"/>
         <error-handler>
             <on-error-propagate type="APIKIT:BAD_REQUEST">
                 <ee:transform doc:name="Transform Message">
@@ -100,7 +100,7 @@ output application/json
             </on-error-propagate>
         </error-handler>
     </flow>
-    <flow name="post:\inventory\(storeId):text\csv:retail-sfcc-sapi-config">
+	<flow name="post:\inventory\(storeId):text\csv:retail-sfcc-sapi-config">
         <ee:transform doc:name="DW set vars fileName &amp; storeId">
             <ee:variables>
                 <ee:set-variable variableName="storeId"><![CDATA[attributes.uriParams.'storeId']]></ee:set-variable>
@@ -131,10 +131,10 @@ output application/json
             </ee:message>
         </ee:transform>
 		<error-handler >
-			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="1eaac711-79b5-44ff-918a-1bb0200104a7" >
-				<ee:transform doc:name="Transform Message" doc:id="51f6a291-46bd-4f93-8a65-ff07e123bc71" >
-					<ee:message >
-						<ee:set-payload ><![CDATA[%dw 2.0
+			<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="e65a1400-6146-49a9-abc4-4127cc93a342" >
+				<ee:transform doc:name="Transform Message" doc:id="51f6a291-46bd-4f93-8a65-ff07e123bc71">
+					<ee:message>
+						<ee:set-payload><![CDATA[%dw 2.0
 output application/json
 ---
 {
@@ -151,7 +151,7 @@ output application/json
 }]]></ee:set-payload>
 					</ee:message>
 				</ee:transform>
-			</on-error-propagate>
+			</on-error-continue>
 		</error-handler>
 
     </flow>

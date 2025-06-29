@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule
+
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+
+    xmlns:munit="http://www.mulesoft.org/schema/mule/munit"
+
+    xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+
+    xmlns="http://www.mulesoft.org/schema/mule/core"
+
+    xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+
+    xsi:schemaLocation="
+
+        http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+
+        http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+
+        http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+
+    <munit:config name="test-suite.xml" />
+
+    <munit:test name="test-suite-retail-sfcc-sapi-main-BAD_REQUEST" doc:id="44050ca8-ded1-4d63-93b1-99a1522ad8ed" description="Test" expectedErrorType="APIKIT:BAD_REQUEST">
+
+        <munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when APIKIT:BAD_REQUEST" doc:id="b76e5c0b-d2d5-4a7f-a830-34f951e3ab8a" processor="apikit:router">
+
+                <munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="retail-sfcc-sapi-config" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+
+                    <munit-tools:error typeId="APIKIT:BAD_REQUEST" />
+
+                </munit-tools:then-return>
+
+            </munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="43a27ab3-d673-4aee-b7f6-e2c25e8f65f3" >
+				<munit:attributes value="#[readUrl('classpath://retailsfccsapimaintest1\set-event_attributes.dwl')]" />
+			</munit:set-event>
+
+        
+</munit:behavior>
+
+        <munit:execution >
+
+            <flow-ref doc:name="Flow-ref to retail-sfcc-sapi-main" doc:id="dc2156de-9955-4157-9cbe-242999791989" name="retail-sfcc-sapi-main"/>
+
+        </munit:execution>
+
+        <munit:validation >
+
+            <munit-tools:assert-equals doc:name="Assert equals" doc:id="dde155ee-7063-44d0-be64-ebd3d300a57f" actual="#[vars.httpStatus]" expected="#[400]"/>
+
+        </munit:validation>
+
+    </munit:test>
+
+    <munit:test name="test-suite-retail-sfcc-sapi-main-NOT_FOUND" doc:id="0f01ff9d-0c3a-4d9a-bb0f-81e4bc8a958f" description="Test" expectedErrorType="APIKIT:NOT_FOUND">
+
+        <munit:behavior >
+
+            <munit-tools:mock-when doc:name="Mock when APIKIT:NOT_FOUND" doc:id="44246d62-71d0-42a8-b9ae-f2352e524e28" processor="apikit:router">
+
+                <munit-tools:with-attributes >
+
+                    <munit-tools:with-attribute whereValue="retail-sfcc-sapi-config" attributeName="config-ref" />
+
+                </munit-tools:with-attributes>
+
+                <munit-tools:then-return >
+
+                    <munit-tools:error typeId="APIKIT:NOT_FOUND" />
+
+                </munit-tools:then-return>
+
+            </munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="df53195c-636f-44c8-9dac-857bdf2ad652" >
+				<munit:attributes value="#[readUrl('classpath://retailsfccsapimaintest1\set-event_attributes.dwl')]" />
+			</munit:set-event>
+
+        
+</munit:behavior>
+
+        <munit:execution >
+
+            <flow-ref doc:name="Flow Reference" doc:id="5d31ad44-34f4-44e8-9f05-884076bd0646" name="retail-sfcc-sapi-main"/>
+
+        </munit:execution>
+
+        <munit:validation >
+
+            <munit-tools:assert-equals doc:name="Assert equals" doc:id="5d3cd551-8267-4ba1-b52f-6b1ee50421fd" actual="#[vars.httpStatus]" expected="#[404]"/>
+
+        </munit:validation>
+
+    </munit:test>
+
+    <munit:test name="test-suite-retail-sfcc-sapi-main-METHOD_NOT_ALLOWED" doc:id="6ec6ccd1-8e36-4230-94cb-4e0e3eed1a28" description="Test" expectedErrorType="APIKIT:METHOD_NOT_ALLOWED">
+
+        <munit:behavior >
+
+            <munit-tools:mock-when doc:name="Mock when APIKIT:METHOD_NOT_ALLOWED" doc:id="85d3ad57-61ea-4170-a37a-5741d2afb6b4" processor="apikit:router">
+
+                <munit-tools:with-attributes >
+
+                    <munit-tools:with-attribute whereValue="retail-sfcc-sapi-config" attributeName="config-ref" />
+
+                </munit-tools:with-attributes>
+
+                <munit-tools:then-return >
+
+                    <munit-tools:error typeId="APIKIT:METHOD_NOT_ALLOWED" />
+
+                </munit-tools:then-return>
+
+            </munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="503f57dd-de69-46b4-be8e-89f87c1f9952" >
+				<munit:attributes value="#[readUrl('classpath://retailsfccsapimaintest1\set-event_attributes.dwl')]" />
+			</munit:set-event>
+
+        
+</munit:behavior>
+
+        <munit:execution >
+
+            <flow-ref doc:name="Flow-ref to retail-sfcc-sapi-main" doc:id="9794ed97-2368-467e-b590-ae82bade8788" name="retail-sfcc-sapi-main"/>
+
+        </munit:execution>
+
+        <munit:validation >
+
+            <munit-tools:assert-equals doc:name="Assert equals" doc:id="60938796-3ebc-4c35-a741-25231b1fd72c" actual="#[vars.httpStatus]" expected="#[405]"/>
+
+        </munit:validation>
+
+    </munit:test>
+
+    <munit:test name="test-suite-retail-sfcc-sapi-main-NOT_ACCEPTABLE" doc:id="7264a732-577e-4903-9c2a-ac572ecf5d08" description="Test" expectedErrorType="APIKIT:NOT_ACCEPTABLE">
+
+        <munit:behavior >
+
+            <munit-tools:mock-when doc:name="Mock when APIKIT:NOT_ACCEPTABLE" doc:id="cdfd4fab-9083-4761-8902-b987e8eb22fb" processor="apikit:router">
+
+                <munit-tools:with-attributes >
+
+                    <munit-tools:with-attribute whereValue="retail-sfcc-sapi-config" attributeName="config-ref" />
+
+                </munit-tools:with-attributes>
+
+                <munit-tools:then-return >
+
+                    <munit-tools:error typeId="APIKIT:NOT_ACCEPTABLE" />
+
+                </munit-tools:then-return>
+
+            </munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="cb534723-71bc-4141-adee-a08ebafec479" >
+				<munit:attributes value="#[readUrl('classpath://retailsfccsapimaintest1\set-event_attributes.dwl')]" />
+			</munit:set-event>
+
+        
+</munit:behavior>
+
+        <munit:execution >
+
+            <flow-ref doc:name="Flow Reference" doc:id="2b262555-72d3-4804-8a57-5e62530e6dea" name="retail-sfcc-sapi-main"/>
+
+        </munit:execution>
+
+        <munit:validation >
+
+            <munit-tools:assert-equals doc:name="Assert equals" doc:id="2ae7cb70-6282-4d5f-8b33-d9ea575a902a" actual="#[vars.httpStatus]" expected="#[406]"/>
+
+        </munit:validation>
+
+    </munit:test>
+
+    <munit:test name="test-suite-retail-sfcc-sapi-main-UNSUPPORTED_MEDIA_TYPE" doc:id="574040bc-0922-4731-a281-769f8656f4ec" description="Test" expectedErrorType="APIKIT:UNSUPPORTED_MEDIA_TYPE">
+
+        <munit:behavior >
+
+            <munit-tools:mock-when doc:name="Mock when APIKIT:UNSUPPORTED_MEDIA_TYPE" doc:id="9695447d-d8dd-4b54-a635-9310a9404634" processor="apikit:router">
+
+                <munit-tools:with-attributes >
+
+                    <munit-tools:with-attribute whereValue="retail-sfcc-sapi-config" attributeName="config-ref" />
+
+                </munit-tools:with-attributes>
+
+                <munit-tools:then-return >
+
+                    <munit-tools:error typeId="APIKIT:UNSUPPORTED_MEDIA_TYPE" />
+
+                </munit-tools:then-return>
+
+            </munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="0ab52aee-c7d5-482d-ab60-0ff82a1c3142" >
+				<munit:attributes value="#[readUrl('classpath://retailsfccsapimaintest1\set-event_attributes.dwl')]" />
+			</munit:set-event>
+
+        
+</munit:behavior>
+
+        <munit:execution >
+
+            <flow-ref doc:name="Flow-ref to retail-sfcc-sapi-main" doc:id="afef21a5-875c-47e5-997f-fe2606f0e2eb" name="retail-sfcc-sapi-main"/>
+
+        </munit:execution>
+
+        <munit:validation >
+
+            <munit-tools:assert-equals doc:name="Assert equals" doc:id="32c2ecb0-5845-40cf-90e5-67432eaa9625" actual="#[vars.httpStatus]" expected="#[415]"/>
+
+        </munit:validation>
+
+    </munit:test>
+
+    <munit:test name="test-suite-retail-sfcc-sapi-main-NOT_IMPLEMENTED" doc:id="ba318dfd-35ee-413f-94e3-c820749a7661" description="Test" expectedErrorType="APIKIT:NOT_IMPLEMENTED">
+
+        <munit:behavior >
+
+            <munit-tools:mock-when doc:name="Mock when APIKIT:NOT_IMPLEMENTED" doc:id="3ee6d899-7721-4ca1-a681-4dd1e45d6e40" processor="apikit:router">
+
+                <munit-tools:with-attributes >
+
+                    <munit-tools:with-attribute whereValue="retail-sfcc-sapi-config" attributeName="config-ref" />
+
+                </munit-tools:with-attributes>
+
+                <munit-tools:then-return >
+
+                    <munit-tools:error typeId="APIKIT:NOT_IMPLEMENTED" />
+
+                </munit-tools:then-return>
+
+            </munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="30b5577e-7c05-4d10-805b-01c1a2f1c51c" >
+				<munit:attributes value="#[readUrl('classpath://retailsfccsapimaintest1\set-event_attributes.dwl')]" />
+			</munit:set-event>
+
+        
+</munit:behavior>
+
+        <munit:execution >
+
+            <flow-ref doc:name="Flow-ref to retail-sfcc-sapi-main" doc:id="453b9f8c-b39f-4f46-851f-bf7ebdc34f74" name="retail-sfcc-sapi-main"/>
+
+        </munit:execution>
+
+        <munit:validation >
+
+            <munit-tools:assert-equals doc:name="Assert equals" doc:id="a7785d15-1784-40c5-94fb-ce820bc8a398" actual="#[vars.httpStatus]" expected="#[501]"/>
+
+        </munit:validation>
+
+    </munit:test>
+
+</mule>

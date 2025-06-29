@@ -1,0 +1,34 @@
+{
+  "headers": {
+    "content-type": "text/csv",
+    "x-filename": "inventory_S001_26-06-2025.csv",
+    "client_id": "asa",
+    "client_secret": "fsdf",
+    "user-agent": "PostmanRuntime/7.44.1",
+    "accept": "*/*",
+    "cache-control": "no-cache",
+    "postman-token": "5793b24c-eb0d-4395-b34e-1fbd41dc5077",
+    "host": "localhost:8081",
+    "accept-encoding": "gzip, deflate, br",
+    "connection": "keep-alive",
+    "content-length": "0"
+  },
+  "clientCertificate": null,
+  "method": "POST",
+  "scheme": "http",
+  "queryParams": {},
+  "requestUri": "/api/inventory/S001",
+  "queryString": "",
+  "version": "HTTP/1.1",
+  "maskedRequestPath": "/inventory/S001",
+  "listenerPath": "/api/*",
+  "localAddress": "/127.0.0.1:8081",
+  "relativePath": "/api/inventory/S001",
+  "uriParams": {
+    "storeId": "S001"
+  },
+  "rawRequestUri": "/api/inventory/S001",
+  "rawRequestPath": "/api/inventory/S001",
+  "remoteAddress": "/127.0.0.1:62889",
+  "requestPath": "/api/inventory/S001"
+}

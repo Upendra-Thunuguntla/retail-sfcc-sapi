@@ -52,6 +52,9 @@
 							<format>html</format>
 						</formats>
 					</coverage>
+					<ignoreFlows>
+						<ignoreFlow>get:\health-check:retail-sfcc-sapi-config</ignoreFlow>
+					</ignoreFlows>
 				</configuration>
 			</plugin>
 		</plugins>

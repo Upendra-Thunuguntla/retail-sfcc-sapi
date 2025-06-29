@@ -38,7 +38,7 @@
 
             </munit-tools:mock-when>
 			<munit:set-event doc:name="Set Input" doc:id="43a27ab3-d673-4aee-b7f6-e2c25e8f65f3" >
-				<munit:attributes value="#[readUrl('classpath://retailsfccsapimaintest1\set-event_attributes.dwl')]" />
+				<munit:attributes value="#[readUrl('classpath://apikit\set-event_attributes.dwl')]" />
 			</munit:set-event>
 
         
@@ -78,7 +78,7 @@
 
             </munit-tools:mock-when>
 			<munit:set-event doc:name="Set Input" doc:id="df53195c-636f-44c8-9dac-857bdf2ad652" >
-				<munit:attributes value="#[readUrl('classpath://retailsfccsapimaintest1\set-event_attributes.dwl')]" />
+				<munit:attributes value="#[readUrl('classpath://apikit\set-event_attributes.dwl')]" />
 			</munit:set-event>
 
         
@@ -118,7 +118,7 @@
 
             </munit-tools:mock-when>
 			<munit:set-event doc:name="Set Input" doc:id="503f57dd-de69-46b4-be8e-89f87c1f9952" >
-				<munit:attributes value="#[readUrl('classpath://retailsfccsapimaintest1\set-event_attributes.dwl')]" />
+				<munit:attributes value="#[readUrl('classpath://apikit\set-event_attributes.dwl')]" />
 			</munit:set-event>
 
         
@@ -158,7 +158,7 @@
 
             </munit-tools:mock-when>
 			<munit:set-event doc:name="Set Input" doc:id="cb534723-71bc-4141-adee-a08ebafec479" >
-				<munit:attributes value="#[readUrl('classpath://retailsfccsapimaintest1\set-event_attributes.dwl')]" />
+				<munit:attributes value="#[readUrl('classpath://apikit\set-event_attributes.dwl')]" />
 			</munit:set-event>
 
         
@@ -198,7 +198,7 @@
 
             </munit-tools:mock-when>
 			<munit:set-event doc:name="Set Input" doc:id="0ab52aee-c7d5-482d-ab60-0ff82a1c3142" >
-				<munit:attributes value="#[readUrl('classpath://retailsfccsapimaintest1\set-event_attributes.dwl')]" />
+				<munit:attributes value="#[readUrl('classpath://apikit\set-event_attributes.dwl')]" />
 			</munit:set-event>
 
         
@@ -238,7 +238,7 @@
 
             </munit-tools:mock-when>
 			<munit:set-event doc:name="Set Input" doc:id="30b5577e-7c05-4d10-805b-01c1a2f1c51c" >
-				<munit:attributes value="#[readUrl('classpath://retailsfccsapimaintest1\set-event_attributes.dwl')]" />
+				<munit:attributes value="#[readUrl('classpath://apikit\set-event_attributes.dwl')]" />
 			</munit:set-event>
 
         
